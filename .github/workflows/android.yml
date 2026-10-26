@@ -26,7 +26,11 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@4c125117fe7c5aed11272ec4213f602f012f89f2 # v5
-      - name: Install Android SDK packages
-        run: sdkmanager "platforms;android-35" "build-tools;34.0.0"
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4
+        with:
+          cmdline-tools-version: '12266719'
+          packages: 'platform-tools platforms;android-35 build-tools;34.0.0'
+          log-accepted-android-sdk-licenses: 'false'
       - name: Build, unit tests and lint
         run: ./gradlew --no-daemon --stacktrace --console=plain assembleDebug testDebugUnitTest lintDebug
