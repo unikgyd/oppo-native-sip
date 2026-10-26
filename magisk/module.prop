@@ -1,0 +1,6 @@
+id=mysip_system
+name=MySIP System Phone Provider
+version=0.2.1
+versionCode=4
+author=MySIP
+description=System-managed SIP calling with persistent runtime and per-app idle exemptions. No IMS/RIL replacement.

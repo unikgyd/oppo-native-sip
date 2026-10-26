@@ -1,0 +1,4 @@
+<resources>
+    <string name="shortcut_dial">SIP 拨号</string>
+    <string name="shortcut_messages">SIP 短信</string>
+</resources>

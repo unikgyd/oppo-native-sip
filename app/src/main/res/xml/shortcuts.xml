@@ -1,0 +1,8 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="sip-dial" android:enabled="true" android:icon="@drawable/ic_phone" android:shortcutShortLabel="@string/shortcut_dial">
+        <intent android:action="android.intent.action.DIAL" android:targetPackage="dev.mysip" android:targetClass="dev.mysip.MainActivity" />
+    </shortcut>
+    <shortcut android:shortcutId="sip-messages" android:enabled="true" android:icon="@drawable/ic_message_line" android:shortcutShortLabel="@string/shortcut_messages">
+        <intent android:action="dev.mysip.OPEN_MESSAGES" android:targetPackage="dev.mysip" android:targetClass="dev.mysip.MainActivity" />
+    </shortcut>
+</shortcuts>
