@@ -15,14 +15,18 @@ try {
     # /data/app extraction performed for ordinary installs cannot be assumed here.
     $archive = [IO.Compression.ZipFile]::OpenRead($apkPath)
     try {
+        $nativeLibraryCount = 0
         foreach ($entry in $archive.Entries) {
-            if ($entry.FullName -match '^lib/(arm64-v8a|armeabi-v7a|x86_64)/([A-Za-z0-9_.+-]+\.so)$') {
-                $abiDir = @{ 'arm64-v8a'='arm64'; 'armeabi-v7a'='arm'; 'x86_64'='x86_64' }[$Matches[1]]
-                $libDir = Join-Path $stage "system\app\MySIP\lib\$abiDir"
+            if ($entry.FullName -match '^lib/([^/]+)/([A-Za-z0-9_.+-]+\.so)$') {
+                if ($Matches[1] -ne 'arm64-v8a') { throw "Only ARM64 APKs are supported: $($entry.FullName)" }
+                $libraryName = $Matches[2]
+                $libDir = Join-Path $stage 'system\app\MySIP\lib\arm64'
                 New-Item -ItemType Directory -Force -Path $libDir | Out-Null
-                [IO.Compression.ZipFileExtensions]::ExtractToFile($entry, (Join-Path $libDir $Matches[2]), $true)
+                [IO.Compression.ZipFileExtensions]::ExtractToFile($entry, (Join-Path $libDir $libraryName), $true)
+                $nativeLibraryCount++
             }
         }
+        if ($nativeLibraryCount -eq 0) { throw 'APK contains no ARM64 native libraries' }
     } finally { $archive.Dispose() }
     # Android shell scripts require LF even when the project is checked out on Windows.
     Get-ChildItem -LiteralPath $stage -Filter '*.sh' | ForEach-Object {

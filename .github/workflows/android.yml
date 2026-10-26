@@ -33,4 +33,4 @@ jobs:
           packages: 'platform-tools platforms;android-35 build-tools;34.0.0'
           log-accepted-android-sdk-licenses: 'false'
       - name: Build, unit tests and lint
-        run: ./gradlew --no-daemon --stacktrace --console=plain assembleDebug testDebugUnitTest lintDebug
+        run: ./gradlew --no-daemon --stacktrace --console=plain assembleDebug testDebugUnitTest lintDebug verifyDebugPackage

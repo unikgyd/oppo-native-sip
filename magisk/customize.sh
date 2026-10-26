@@ -1,5 +1,6 @@
 #!/system/bin/sh
 ui_print "MySIP system phone provider"
+[ "$ARCH" = arm64 ] || abort "MySIP requires an ARM64 device."
 ui_print "Installing into system/app; existing SIM/IMS services are retained."
 ui_print "Reboot after installation. Enable the MySIP calling account in Settings."
 set_perm_recursive "$MODPATH" 0 0 0755 0644

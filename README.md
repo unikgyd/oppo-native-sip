@@ -5,7 +5,7 @@
 
 将 SIP 网关接入 Android 原生电话体系：来电、接听、挂断和通话记录使用手机原厂电话界面，后台服务维护 SIP 注册，不依赖 Google 推送。
 
-基于 Kotlin、Linphone SDK、Android `PhoneAccount / ConnectionService`，可通过 Magisk 部署为常驻系统应用。当前版本 **0.2.1**。
+基于 Kotlin、Linphone SDK、Android `PhoneAccount / ConnectionService`，可通过 Magisk 部署为常驻系统应用。当前版本 **0.2.2**，安装包仅支持 **ARM64**。
 
 ## 功能
 
@@ -20,10 +20,10 @@
 
 | 能力 | 条件 |
 | --- | --- |
-| 基础客户端 | Android 9+；其他设备和 ROM 仍需实际验证 |
+| 基础客户端 | Android 9+、ARM64（`arm64-v8a`）；其他设备和 ROM 仍需实际验证 |
 | 系统常驻与收件箱同步 | Root + Magisk；安装系统模块并重启 |
 | 原厂拨号盘第三按钮 | **Android 13 + OPPO 电话 13.20.0 + LSPosed**，作用域仅 `com.android.contacts` |
-| 已验证设备 | OPPO PGJM10 / Android 13 / ARM64；另有 Android 15 模拟器验证 |
+| 已验证设备 | OPPO PGJM10 / Android 13 / ARM64；旧版另有 Android 15 x86_64 模拟器验证，当前包不支持 x86_64 |
 
 注册系统通话账户不代表所有厂商拨号盘都会出现第三个按钮。未适配的拨号器可使用 MySIP 自身拨号页或系统号码链接入口。
 
@@ -58,11 +58,13 @@ Windows PowerShell：
 或直接执行 Gradle（Linux / macOS 将 `gradlew.bat` 换为 `./gradlew`）：
 
 ```powershell
-.\gradlew.bat assembleDebug testDebugUnitTest lintDebug
+.\gradlew.bat assembleDebug testDebugUnitTest lintDebug verifyDebugPackage
 .\scripts\package-module.ps1
 ```
 
-脚本输出 `dist/MySIP-0.2.1.apk` 和 `dist/MySIP-system-0.2.1.zip`。这是调试构建；公开分发请使用自己的签名，参见 [发布说明](docs/RELEASING.md)。CI 只执行构建与检查，不上传 APK 或创建 Release。
+脚本输出 `dist/MySIP-0.2.2.apk` 和 `dist/MySIP-system-0.2.2.zip`。本地调试包约 **24.4 MiB**，模块约 **32.5 MiB**；具体大小随构建和签名略有变化。仅包含 ARM64 库，并排除未使用的示例和备用媒体，保留默认通话资源、协议语法和 TLS 证书。
+
+这是调试构建；公开分发请使用自己的签名，升级时保持原签名，参见 [发布说明](docs/RELEASING.md)。CI 执行构建、测试和 APK 内容检查，不上传 APK 或创建 Release。
 
 ## 文档
 

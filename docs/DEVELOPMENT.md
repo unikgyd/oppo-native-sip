@@ -54,6 +54,28 @@ flowchart LR
 
 脚本每次使用独立临时目录，打包 APK 和对应原生库，避免混入上次构建的文件；输出位于 `dist/`。
 
+## ARM64 与资源精简
+
+0.2.2 起，debug / release 均仅打包 `arm64-v8a`。x86 / x86_64 模拟器和仅支持 32 位的设备无法安装当前包；历史模拟器测试结果来自旧版通用包。
+
+使用 Android 资源合并配置排除 7 个 SDK 媒体文件，不修改上游 AAR：
+
+```text
+hello16000.wav
+hello8000.wav
+four_hands_together.mkv
+house_keeping.mkv
+its_a_game.mkv
+leaving_dreams.mkv
+soft_as_snow.mkv
+```
+
+这些文件未被应用使用，也不是 SDK 默认通话媒体。保留全部 13 个 ARM64 原生库、默认铃声及回铃音、保持音乐、备用音频、协议语法、TLS 根证书和默认图像。通话、短信、通知、Telecom 与 LSPosed 代码不因本次精简改变；代码混淆设置也保持原状。
+
+`verifyDebugPackage` 检查最终 APK 的 ARM64 库集合、关键资源、媒体排除和 LSPosed 入口，已接入构建脚本与 CI。升级 SDK 时需重新确认清理名单和检查内容。
+
+模块仍将同一套 ARM64 库放在 APK 外的 `system/app/MySIP/lib/arm64/`，供预装系统应用加载。打包脚本拒绝混入其他架构，安装脚本拒绝非 ARM64 设备。
+
 ## 本机 SIP fixture
 
 Python 3，无第三方依赖：

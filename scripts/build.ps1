@@ -2,7 +2,7 @@ param([switch]$Offline, [switch]$NoProxy, [string]$LinphoneAar, [string]$XposedA
 $ErrorActionPreference = 'Stop'
 Push-Location (Split-Path $PSScriptRoot -Parent)
 try {
-    $argsList = @('--console=plain', 'assembleDebug', 'testDebugUnitTest', 'lintDebug')
+    $argsList = @('--console=plain', 'assembleDebug', 'testDebugUnitTest', 'lintDebug', 'verifyDebugPackage')
     if ($NoProxy) { $argsList += @('-Dhttp.proxyHost=', '-Dhttps.proxyHost=', '-Dhttp.nonProxyHosts=*') }
     if ($Offline) { $argsList += '--offline' }
     if (!$LinphoneAar -and (Test-Path -LiteralPath '.tools\linphone-complete.aar')) { $LinphoneAar = (Resolve-Path -LiteralPath '.tools\linphone-complete.aar').Path }

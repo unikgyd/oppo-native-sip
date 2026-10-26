@@ -2,6 +2,8 @@
 
 ## 首次安装
 
+0.2.2 起仅支持 ARM64（`arm64-v8a`）设备，不支持 x86_64 模拟器或仅支持 32 位的手机。
+
 1. 安装 APK，打开 MySIP，填写完整 SIP 账户。服务器填写主机名或 IP，端口单独填写。
 2. 选择网关实际支持的 UDP / TCP / TLS，不会自动使用预置服务器或测试分机。
 3. 保存并连接，确认状态在线。
@@ -41,7 +43,7 @@ Shamiko 白名单模式可能向普通应用隐藏模块挂载路径。安装脚
 此兼容安装需要在已启动的 Android 10+ 系统内执行。手动恢复可使用：
 
 ```sh
-adb install -r --staged --staged-ready-timeout 0 MySIP-0.2.1.apk
+adb install -r --staged --staged-ready-timeout 0 MySIP-0.2.2.apk
 adb shell pm list staged-sessions
 ```
 
